@@ -1,9 +1,36 @@
 const canvas = document.querySelector('canvas');
+
 canvas.width = 1024;
 canvas.height = 576;
+
+const scaledCanvas = {
+    width: canvas.width / 4,
+    height: canvas.height /4
+}
+
 const c = canvas.getContext('2d');
 
 const gravity = 0.5;
+
+class Sprite
+{
+    constructor({position, imageSrc}) {
+        this.position = position;
+        this.image = new Image();
+        this.image.src = imageSrc;
+    }
+
+    draw() {
+        if(!this.image){
+            return
+        }
+        c.drawImage(this.image, this.position.x, this.position.y);
+    }
+
+    update() {
+        this.draw();
+    }
+}
 
 class Player
 {
@@ -35,26 +62,40 @@ class Player
     }
 }
 
-const player1 = new Player({x:500,y:100});
+const player = new Player({x:500,y:100});
+const player2 = new Player({x:100,y:0});
+
+const background = new Sprite({
+    position: {x:0, y:0},
+    imageSrc: 'img/background.png'
+})
+
+const keys = {
+    d: {pressed: false},
+    a: {pressed: false},
+}
 
 let y = 100;
 function animate () {
     window.requestAnimationFrame(animate);
     c.fillStyle = 'white';
     c.fillRect(0, 0, canvas.width, canvas.height);
-    player1.update();
+    
+    c.save();
+    c.scale(4, 4); //tidak merubah dimensi original image
+    c.translate(0, -background.image.height + scaledCanvas.height)
+    background.update();
+    c.restore();
 
-    player1.velocity.x = 0
+    player.update();
+    player2.update();
+    
+    player.velocity.x = 0
     if(keys.d.pressed == true) {
-        player1.velocity.x = 2;
+        player.velocity.x = 5;
     }else if (keys.a.pressed == true){
-        player1.velocity.x =  -2;
+        player.velocity.x =  -5;
     }
-}
-
-const keys = {
-    d: {pressed: false},
-    a: {pressed: false},
 }
 
 animate();
@@ -68,7 +109,7 @@ window.addEventListener('keydown', (e) => {
             keys.a.pressed = true;
             break;
         case 'w':
-            player1.velocity.y = -15;
+            player.velocity.y = -15;
             break;    
         default:
             break;
@@ -84,7 +125,7 @@ window.addEventListener('keyup', (e) => {
             keys.a.pressed = false;
             break;
         case 'w':
-            player1.velocity.y = -15;
+            player.velocity.y = -15;
             break;    
         default:
             break;
