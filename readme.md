@@ -2,3 +2,6 @@ Mengubah posisi player yang tadinya this.x dan this.y menjadi object this.positi
 Biar supaya lebih jelas x apa dan y apa. karna ada juga x velocity and y velocity
 
 cari tahu tentang c.save() dan c.restore()
+
+kenapa checkForHorizontalCollision() pembuatannya diatas applyGravity()?
+dan kenapa checkForHorizontalCollision() pemanggilannya diatas applyGravity()?
