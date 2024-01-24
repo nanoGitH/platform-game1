@@ -9,8 +9,6 @@ const scaledCanvas = {
     height: canvas.height / 4
 }
 
-const gravity = 0.5;
-
 const floorCollisions2D = [];
 const platformCollision2D = [];
 for(let i = 0; i < floorCollisions.length; i += 36) {
@@ -34,20 +32,24 @@ platformCollision2D.forEach((row, y) => {
     row.forEach((symbol, x) => {
         if (symbol === 1008)
         platformCollisionBlocks.push(new CollisionBlock({
-            position: {
-                x: x * 16,
-                y: y * 16}
-        }));
-    });
+    position: {
+        x: x * 16,
+        y: y * 16}
+    }));
+});
 });
 
 
 console.log(platformCollision2D);
 
 
+const gravity = 0.5;
+
 const player = new Player({
     position: {x:100,y:100},
     collisionBlocks, //shorthand for collisionBlocks: collisionBlocks
+    imageSrc: 'img/warrior/Idle.png',
+    frameRate: 8,
 });
 
 const background = new Sprite({
