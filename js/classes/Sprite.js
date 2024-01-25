@@ -38,8 +38,6 @@ class Sprite
             this.position.y,                        //
             this.width,                             //
             this.height,                            //
-
-
             );
     }
 

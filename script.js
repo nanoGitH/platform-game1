@@ -46,7 +46,7 @@ console.log(platformCollision2D);
 const gravity = 0.5;
 
 const player = new Player({
-    position: {x:100,y:100},
+    position: {x:100,y:300},
     collisionBlocks, //shorthand for collisionBlocks: collisionBlocks
     imageSrc: 'img/warrior/Idle.png',
     frameRate: 8,

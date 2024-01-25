@@ -5,3 +5,5 @@ cari tahu tentang c.save() dan c.restore()
 
 kenapa checkForHorizontalCollision() pembuatannya diatas applyGravity()?
 dan kenapa checkForHorizontalCollision() pemanggilannya diatas applyGravity()?
+
+collisionBlocks => shorthand for collisionBlocks: collisionBlocks;
