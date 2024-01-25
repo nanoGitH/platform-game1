@@ -111,7 +111,7 @@ const keys = {
 const camera = {
     position: {
         x: 0,
-        y: 0,
+        y:  -432 + scaledCanvas.height, //bg image height
     },
 }
 
@@ -123,10 +123,10 @@ function animate () {
     
     c.save();
     c.scale(4, 4); //tidak merubah dimensi original image
-    c.translate(camera.position.x, -background.image.height + scaledCanvas.height)
+    c.translate(camera.position.x, camera.position.y)
     background.update();
-    collisionBlocks.forEach(e => e.update())
-    platformCollisionBlocks.forEach(e => e.update())
+    // collisionBlocks.forEach(e => e.update())
+    // platformCollisionBlocks.forEach(e => e.update())
     
     player.checkForHorizontalCanvasCollision();
     player.update();
@@ -147,14 +147,14 @@ function animate () {
         player.switchSprite('IdleLeft');
     }
 
-    if ( player.velocity.y < 0 && !facingLeft ) {
-        player.switchSprite('Jump');
-    }else if ( player.velocity.y > 0 && !facingLeft ) {
-        player.switchSprite('Fall');
-    }else if ( player.velocity.y < 0 && facingLeft ) {
-        player.switchSprite('JumpLeft');
-    }else if ( player.velocity.y > 0 && facingLeft ) {
-        player.switchSprite('FallLeft');
+    if ( player.velocity.y < 0 ) {
+        player.shouldPanCameraDown({ camera, canvas }) 
+        if ( !facingLeft ) player.switchSprite('Jump')
+        else player.switchSprite('JumpLeft')
+    } else if ( player.velocity.y > 0 ) {
+        player.shouldPanCameraUp({ camera, canvas }) 
+        if ( !facingLeft ) player.switchSprite('Fall');
+        else player.switchSprite('FallLeft');
     }
 
     c.restore();

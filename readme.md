@@ -7,3 +7,8 @@ kenapa checkForHorizontalCollision() pembuatannya diatas applyGravity()?
 dan kenapa checkForHorizontalCollision() pemanggilannya diatas applyGravity()?
 
 collisionBlocks => shorthand for collisionBlocks: collisionBlocks;
+
+jump and fall diganti
+
+Bingung:
+*camera panning
