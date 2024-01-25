@@ -12,3 +12,5 @@ jump and fall diganti
 
 Bingung:
 *camera panning
+
+view: https://nanogith.github.io/platform-game1/
