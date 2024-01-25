@@ -108,7 +108,14 @@ const keys = {
     a: {pressed: false},
 }
 
-let y = 100;
+const camera = {
+    position: {
+        x: 0,
+        y: 0,
+    },
+}
+
+// let y = 100; delete???
 function animate () {
     window.requestAnimationFrame(animate);
     c.fillStyle = 'white';
@@ -116,21 +123,24 @@ function animate () {
     
     c.save();
     c.scale(4, 4); //tidak merubah dimensi original image
-    c.translate(0, -background.image.height + scaledCanvas.height)
+    c.translate(camera.position.x, -background.image.height + scaledCanvas.height)
     background.update();
     collisionBlocks.forEach(e => e.update())
     platformCollisionBlocks.forEach(e => e.update())
     
+    player.checkForHorizontalCanvasCollision();
     player.update();
     player.velocity.x = 0
     if (keys.d.pressed == true) {
         player.switchSprite('Run');
         player.velocity.x = 2;
         facingLeft = false;
+        player.shouldPanCameraToTheLeft({ canvas, camera });
     }else if (keys.a.pressed == true) {
         player.switchSprite('RunLeft');
         player.velocity.x =  -2;
         facingLeft = true;
+        player.shouldPanCameraToTheRight({ canvas, camera });
     }else if (player.velocity.y === 0 && !facingLeft) {
         player.switchSprite('Idle');
     }else if (player.velocity.y === 0 && facingLeft) {
