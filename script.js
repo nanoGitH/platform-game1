@@ -34,7 +34,9 @@ platformCollision2D.forEach((row, y) => {
         platformCollisionBlocks.push(new CollisionBlock({
     position: {
         x: x * 16,
-        y: y * 16}
+        y: y * 16,
+    },
+    height: 4,
     }));
 });
 });
@@ -43,13 +45,57 @@ platformCollision2D.forEach((row, y) => {
 console.log(platformCollision2D);
 
 
-const gravity = 0.5;
+const gravity = 0.1;
+let facingLeft = false;
 
 const player = new Player({
     position: {x:100,y:300},
     collisionBlocks, //shorthand for collisionBlocks: collisionBlocks
+    platformCollisionBlocks,
     imageSrc: 'img/warrior/Idle.png',
     frameRate: 8,
+    animations: {
+        Idle: {
+            imageSrc: 'img/warrior/Idle.png',
+            frameRate: 8,
+            frameBuffer: 3,
+        },
+        Run: {
+            imageSrc: 'img/warrior/Run.png',
+            frameRate: 8,
+            frameBuffer: 5,
+        },
+        Jump: {
+            imageSrc: 'img/warrior/Jump.png',
+            frameRate: 2,
+            frameBuffer: 3,
+        },
+        Fall: {
+            imageSrc: 'img/warrior/Fall.png',
+            frameRate: 2,
+            frameBuffer: 3,
+        },
+        IdleLeft: {
+            imageSrc: 'img/warrior/IdleLeft.png',
+            frameRate: 8,
+            frameBuffer: 3,
+        },
+        RunLeft: {
+            imageSrc: 'img/warrior/RunLeft.png',
+            frameRate: 8,
+            frameBuffer: 5,
+        },
+        JumpLeft: {
+            imageSrc: 'img/warrior/JumpLeft.png',
+            frameRate: 2,
+            frameBuffer: 3,
+        },
+        FallLeft: {
+            imageSrc: 'img/warrior/FallLeft.png',
+            frameRate: 2,
+            frameBuffer: 3,
+        },
+    }
 });
 
 const background = new Sprite({
@@ -77,12 +123,30 @@ function animate () {
     
     player.update();
     player.velocity.x = 0
-    if(keys.d.pressed == true) {
-        player.velocity.x = 5;
-    }else if (keys.a.pressed == true){
-        player.velocity.x =  -5;
+    if (keys.d.pressed == true) {
+        player.switchSprite('Run');
+        player.velocity.x = 2;
+        facingLeft = false;
+    }else if (keys.a.pressed == true) {
+        player.switchSprite('RunLeft');
+        player.velocity.x =  -2;
+        facingLeft = true;
+    }else if (player.velocity.y === 0 && !facingLeft) {
+        player.switchSprite('Idle');
+    }else if (player.velocity.y === 0 && facingLeft) {
+        player.switchSprite('IdleLeft');
     }
-    
+
+    if ( player.velocity.y < 0 && !facingLeft ) {
+        player.switchSprite('Jump');
+    }else if ( player.velocity.y > 0 && !facingLeft ) {
+        player.switchSprite('Fall');
+    }else if ( player.velocity.y < 0 && facingLeft ) {
+        player.switchSprite('JumpLeft');
+    }else if ( player.velocity.y > 0 && facingLeft ) {
+        player.switchSprite('FallLeft');
+    }
+
     c.restore();
 
 }
@@ -98,7 +162,7 @@ window.addEventListener('keydown', (e) => {
             keys.a.pressed = true;
             break;
         case 'w':
-            player.velocity.y = -8;
+            player.velocity.y = -4;
             break;
     }
 });
